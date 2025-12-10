@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - FileHost</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>FileHost</span>
+            </div>
+        </nav>
+
+        <main class="download-main">
+            <div class="download-card">
+                <div class="download-header">
+                    <i class="fas fa-download download-icon"></i>
+                    <h1>Your File is Ready</h1>
+                    <p>Click the button below to download your file</p>
+                </div>
+
+                <div class="file-details" id="fileDetails">
+                    <div class="file-info">
+                        <div class="file-icon-large">📎</div>
+                        <div class="file-meta">
+                            <h2 id="fileName">Loading...</h2>
+                            <p id="fileSize">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="download-actions">
+                    <a href="#" class="download-btn" id="downloadLink">
+                        <i class="fas fa-download"></i>
+                        <span>Download File</span>
+                    </a>
+                    <button class="share-btn" onclick="copyShareLink()">
+                        <i class="fas fa-share"></i> Share Link
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Get filename from URL
+        const path = window.location.pathname;
+        const filename = decodeURIComponent(path.split('/').pop());
+        const originalName = filename.split('-').slice(2).join('-');
+
+        document.getElementById('fileName').textContent = originalName || 'File';
+        document.getElementById('downloadLink').href = `/downloads/${filename}`;
+        document.getElementById('fileName').textContent = originalName;
+
+        // Fetch file size
+        fetch(`/downloads/${filename}`)
+            .then(res => res.blob())
+            .then(blob => {
+                const size = new Blob([blob]).size;
+                document.getElementById('fileSize').textContent = formatBytes(size);
+            })
+            .catch(() => {
+                document.getElementById('fileSize').textContent = 'Size unavailable';
+            });
+
+        function copyShareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btn = event.target.closest('.share-btn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>
