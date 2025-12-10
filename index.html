@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileHost - Free File Sharing</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>FileHost</span>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-user"></i> Account</a>
+            </div>
+        </nav>
+
+        <!-- Main Upload Section -->
+        <main class="main-content">
+            <div class="upload-card">
+                <div class="upload-header">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h1>Upload Files</h1>
+                    <p>Free file sharing up to 1GB. No account required.</p>
+                </div>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop files here or <span id="clickToUpload">click to browse</span></p>
+                        <small>Supports up to 1GB per file</small>
+                    </div>
+                    <input type="file" id="fileInput" multiple accept="*/*" style="display: none;">
+                </div>
+
+                <div class="progress-container" id="progressContainer" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">0%</p>
+                </div>
+
+                <div class="upload-files-list" id="filesList"></div>
+            </div>
+        </main>
+
+        <!-- Success Modal -->
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h2>Upload Complete!</h2>
+                <div class="download-info" id="downloadInfo"></div>
+                <div class="modal-actions">
+                    <button class="btn-copy" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy Link
+                    </button>
+                    <a href="#" class="btn-primary" id="downloadBtn" target="_blank">
+                        <i class="fas fa-download"></i> Open Download Page
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
